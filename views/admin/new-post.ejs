@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/head') %>
+  <body class="sb-nav-fixed">
+    <%- include('partials/nav') %>
+    <div id="layoutSidenav">
+      <div id="layoutSidenav_nav"><%- include('partials/sidebar') %></div>
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container py-5">
+            <div
+              class="card shadow-sm p-4"
+              style="max-width: 700px; margin: auto"
+            >
+              <h4 class="mb-4 fw-bold">Add New Product</h4>
+              <form
+                method="POST"
+                action="/post"
+                enctype="multipart/form-data"
+                id="postForm"
+              >
+                <!-- Product Name -->
+                <div class="mb-3">
+                  <label for="productName" class="form-label"
+                    >Product Name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="productName"
+                    placeholder="e.g. Nike Air Max"
+                    name="name"
+                  />
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                  <label for="description" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="description"
+                    rows="3"
+                    placeholder="Write product description..."
+                    name="description"
+                  ></textarea>
+                </div>
+
+                <!-- long description -->
+                <div class="mb-3">
+                  <label for="description_long" class="form-label"
+                    >Long Description</label
+                  >
+                  <input
+                    type="hidden"
+                    name="description_long"
+                    id="description_long"
+                  />
+                  <div id="editor" style="height: 300px"></div>
+                </div>
+
+                <!-- Price & Stock (side by side) -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="price" class="form-label">Price ($)</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="price"
+                      placeholder="e.g. 49.99"
+                      min="0"
+                      name="price"
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="stock" class="form-label">Sale price</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="stock"
+                      placeholder="e.g. 100"
+                      min="0"
+                      name="saleprice"
+                    />
+                  </div>
+                </div>
+
+                <!-- Product Image -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <div class="mb-3">
+                      <label for="productImage" class="form-label"
+                        >Product Image</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="productImage"
+                        accept="image/*"
+                        name="image"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="stock" class="form-label">Stock Quantity</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="stock"
+                      placeholder="e.g. 100"
+                      min="0"
+                      name="stock_quantity"
+                    />
+                  </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-primary px-4">
+                    Add Product
+                  </button>
+                  <button type="reset" class="btn btn-outline-secondary px-4">
+                    Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div
+              class="d-flex align-items-center justify-content-between small"
+            >
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <%- include('partials/footer') %>
+    <script>
+      const toolbarOptions = [
+        ["bold", "italic", "underline", "strike"], // toggled buttons
+        ["blockquote", "code-block"],
+        ["link", "image", "video", "formula"],
+
+        [{ header: 1 }, { header: 2 }], // custom button values
+        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+        [{ script: "sub" }, { script: "super" }], // superscript/subscript
+        [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+        [{ direction: "rtl" }], // text direction
+
+        [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        [{ font: [] }],
+        [{ align: [] }],
+
+        ["clean"], // remove formatting button
+      ];
+
+      const quill = new Quill("#editor", {
+        modules: {
+          toolbar: toolbarOptions,
+        },
+        theme: "snow",
+      });
+    </script>
+    <script>
+      const form = document.getElementById("postForm");
+      form.addEventListener("submit", function (e) {
+        const longDescription = document.getElementById("description_long");
+        longDescription.value = quill.root.innerHTML;
+      });
+    </script>
+  </body>
+</html>
