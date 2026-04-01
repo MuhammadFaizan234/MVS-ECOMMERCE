@@ -62,3 +62,15 @@ export const sigup = async (req, res) => {
     res.send(`error creating user: ${error.message}`);
   }
 };
+
+export const signout = async (req, res) => {
+  try {
+    req.session.destroy();
+
+    res.redirect("/");
+
+    res.redirect("/login");
+  } catch (error) {
+    res.send(`error creating user: ${error.message}`);
+  }
+};
